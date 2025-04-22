@@ -6,7 +6,12 @@ export class UsersService {
   private _users: UserEntity[] = [];
 
   getAllUser(): UserEntity[] {
-    return this._users
+    return this._users.filter((user : UserEntity) => {
+
+      if(user.status != "Deleted" ){
+        return user
+      }
+    })
   }
    searchByName(name: string){
     let userSearch = this._users.find((user : UserEntity) => user.name === name)
@@ -26,12 +31,16 @@ export class UsersService {
 
   deleteUser(id: string): string{
 
-   let user = this._users.forEach((user:UserEntity) =>{
+    this._users.forEach((user:UserEntity) =>{
         if(user.id == id){
             user.status = Status.Deleted
         }
         return user
     })
-    return `Usuário ${user} desativado com sucesso!`
+    return `Usuário desativado com sucesso!`
+  }
+
+  updateUser(){
+
   }
 }

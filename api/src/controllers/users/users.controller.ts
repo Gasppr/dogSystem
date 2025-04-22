@@ -43,8 +43,7 @@ export class UsersController {
   @Delete(':id')
   deleteUser(@Param('id') id : string){
     //vai desativar o usuário apenas, não apagando do banco de dados
-
-    return "Usuário excluído com sucesso!"
+    return this.userService.deleteUser(id);
   }
 
 
