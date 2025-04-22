@@ -16,7 +16,10 @@ export class UsersService {
    searchByName(name: string){
     let userSearch = this._users.find((user : UserEntity) => user.name === name)
 
-    return userSearch;
+    return {
+      resultado : userSearch,
+      mensagem: "Usuário encontrado com sucesso"
+    };
     
   }
 
@@ -26,7 +29,10 @@ export class UsersService {
 
     let userCreated = this._users.find((u : UserEntity) => u.name == user.name)
 
-     return `Usuário ${userCreated?.name} criado com sucesso! `
+     return {
+        mensagem: "Usuário criado com sucesso!",
+        resultado : {nome : userCreated?.name, email: userCreated?.email}
+     }
   }
 
   deleteUser(id: string): string{
@@ -40,7 +46,26 @@ export class UsersService {
     return `Usuário desativado com sucesso!`
   }
 
-  updateUser(){
+  updateUser(id: string, user: UserEntity){
+    
+    const index = this._users.findIndex(u => u.id === id);
 
+    if (index === -1) {
+      return {
+        mensagem: "Usuário não encontrado.",
+        resultado: null
+      };
+    }
+
+    this._users[index] = {
+      ...this._users[index],
+      ...user,               
+    };
+  
+
+    return  {
+      mensagem: "Usuário alterado com sucesso", 
+      resultado : this._users[index]
+    }
   }
 }

@@ -34,9 +34,17 @@ export class UsersController {
     return await this.userService.createUser(user)
   }
 
-  @Put()
-  updateUserById(){
-    return "Alterações no cadastro feitas com sucesso!"
+  @Put('/:id')
+  updateUserById(@Param('id') id : string , @Body() userDto : UserDto){
+
+    let user : UserEntity = {
+      id: userDto.id,
+      name: userDto.name,
+      email: userDto.email,
+      password: userDto.password,
+      status: userDto.status
+    }
+    return this.userService.updateUser(id , user )
   }
 
   //Trocar esse decorator Param para @Body
