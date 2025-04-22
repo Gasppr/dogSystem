@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserDto } from 'src/dto/user.dto';
-import { User } from 'src/entities/user.entity';
+import { UserEntity } from 'src/entities/user.entity';
 import { UsersService } from 'src/services/users/users.service';
 
 @Controller('users')
@@ -10,7 +10,7 @@ export class UsersController {
 
   }
 
-  @Get('allUsers')  
+  @Get('allusers')  
   allUsers(){
         return this.userService.getAllUser()
     }
@@ -21,18 +21,17 @@ export class UsersController {
   }
 
   @Post('create-user')
-  createUser(@Body() userDto : UserDto){
-
-    let user : User = new User();
-
-    user.id = userDto.id
-    user.email = userDto.email
-    user.name = userDto.name
-    user.password = userDto.password
-    user.status = userDto.status
-
-
-    return "Usuário criado com sucesso!"
+  async createUser(@Body() userDto : UserDto){
+    let user : UserEntity;
+    user = {
+      id: userDto.id,
+      name: userDto.name,
+      email: userDto.email,
+      password: userDto.password,
+      status: userDto.status
+    };
+    
+    return await this.userService.createUser(user)
   }
 
   @Put()

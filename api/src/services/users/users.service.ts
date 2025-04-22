@@ -1,31 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { User, Status } from 'src/entities/user.entity';
+import { UserEntity, Status } from 'src/entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  users: User[];
+  private _users: UserEntity[] = [];
 
-  getAllUser(): User[] {
-    return this.users
+  getAllUser(): UserEntity[] {
+    return this._users
   }
    searchByName(name: string){
-    let userSearch = this.users.find((user : User) => user.name === name)
+    let userSearch = this._users.find((user : UserEntity) => user.name === name)
 
     return userSearch;
     
   }
 
-  createUser(user : User){
-    this.users.push(user);
+   async createUser(user : UserEntity){
+    
+    this._users.push(user)
 
-    let userCreated = this.users.find((u : User) => u.name == user.name)
+    let userCreated = this._users.find((u : UserEntity) => u.name == user.name)
 
-    return `Usuário ${userCreated?.name} criado com sucesso! `
+     return `Usuário ${userCreated?.name} criado com sucesso! `
   }
 
   deleteUser(id: string): string{
 
-   let user = this.users.forEach((user:User) =>{
+   let user = this._users.forEach((user:UserEntity) =>{
         if(user.id == id){
             user.status = Status.Deleted
         }
